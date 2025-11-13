@@ -12,7 +12,7 @@ import {
 } from "react-icons/fi";
 import {
   FaGithub,
-  FaLinkedin,
+  FaLinkedin,  
   FaTwitter,
   FaEnvelope,
   FaPhone,
@@ -44,9 +44,9 @@ export default function Contact() {
   ];
 
   const socialLinks = [
-    { icon: FaGithub, link: "https://github.com", label: "GitHub" },
-    { icon: FaLinkedin, link: "https://linkedin.com", label: "LinkedIn" },
-    { icon: FaTwitter, link: "https://twitter.com", label: "Twitter" },
+    { icon: FaGithub, link: "https://github.com/1mishrarajat", label: "GitHub" },
+    { icon: FaLinkedin, link: "https://www.linkedin.com/in/rajat-mishra-6a0822255/", label: "LinkedIn" },
+
   ];
 
   return (

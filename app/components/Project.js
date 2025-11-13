@@ -20,25 +20,31 @@ export default function Projects() {
       title: 'OJS Default Theme',
       image: 'https://s.wordpress.com/mshots/v1/https://default-theme.openjournalcloud.com?w=1200',
       link: 'https://default-theme.openjournalcloud.com/',
-      tech: ['OJS', 'PHP', 'MySQL'],
+      tech: ['OJS', 'CI4', 'MySQL','React Js '],
     },
     {
       title: 'OJS Classic Theme',
       image: 'https://s.wordpress.com/mshots/v1/https://classic-theme.openjournalcloud.com?w=1200',
       link: 'https://classic-theme.openjournalcloud.com/',
-      tech: ['OJS', 'PHP', 'Theme Customization'],
+      tech: ['OJS', 'CI4', 'Theme Customization', 'React Js'],
     },
     {
       title: 'Insurance Website',
       image: 'https://s.wordpress.com/mshots/v1/https://umbrellainsurance.ie?w=1200',
       link: 'https://umbrellainsurance.ie/',
-      tech: ['React', 'Tailwind', 'UI/UX'],
+      tech: ['Next Js', 'Tailwind', 'Php'],
+    },
+     {
+      title: 'My Portfolio',
+      image: 'https://s.wordpress.com/mshots/v1/https://my-portfolio-rho-liart-24.vercel.app/?w=1200',
+      link: 'https://my-portfolio-rho-liart-24.vercel.app/',
+      tech: ['Html', 'Tailwind CSS'],
     },
     {
-      title: 'Brand Portfolio Template',
+      title: 'Basic Design',
       image: 'https://s.wordpress.com/mshots/v1/https://logoipsum-pied.vercel.app?w=1200',
       link: 'https://logoipsum-pied.vercel.app/',
-      tech: ['Next.js', 'Tailwind CSS'],
+      tech: ['Html', 'Tailwind CSS'],
     },
   ];
 

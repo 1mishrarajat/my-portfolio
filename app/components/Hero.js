@@ -72,16 +72,20 @@ export default function Hero() {
           {...fadeUp(1.4)}
           className="flex flex-col sm:flex-row justify-center items-center gap-5 mt-10"
         >
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => scrollToSection('projects')}
-            className="px-8 py-4 rounded-full text-lg font-semibold
-            bg-[#F99F20] text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)]
-            hover:brightness-110 transition-all duration-300"
-          >
-            View My Work
-          </motion.button>
+          <motion.a
+  href="/Rajat_resume.pdf"
+  target="_blank"
+  rel="noopener noreferrer"
+  download
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
+  className="px-8 py-4 rounded-full text-lg font-semibold
+  bg-[#F99F20] text-white shadow-[0_4px_4px_rgba(0,0,0,0.25)]
+  hover:brightness-110 transition-all duration-300"
+>
+  Download Resume
+</motion.a>
+
 
           <motion.button
             whileHover={{ scale: 1.05 }}

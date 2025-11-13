@@ -5,38 +5,26 @@ import { motion } from 'framer-motion';
 import { FiSun, FiMoon, FiMenu, FiX } from 'react-icons/fi';
 
 export default function Header() {
-  const [darkMode, setDarkMode] = useState(false);
+ 
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const isDark = typeof window !== 'undefined' && localStorage.getItem('darkMode') === 'true';
-    setDarkMode(isDark);
-    if (isDark) document.documentElement.classList.add('dark');
 
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
-  const toggleDarkMode = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('darkMode', newMode);
-      document.documentElement.classList.toggle('dark');
-    }
-  };
 
+  // ✅ Smooth scroll with header offset
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      const yOffset = -70; // adjust for your fixed header
+      const y = el.getBoundingClientRect().top + window.scrollY + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
       setMobileMenuOpen(false);
     }
   };
 
-  const navItems = ['home', 'about', 'skills', 'projects', 'contact'];
+  // ✅ Change 'home' → 'hero'
+  const navItems = ['hero', 'about', 'skills', 'projects', 'experience-Education','services','contact'];
 
   return (
     <motion.header
@@ -51,17 +39,17 @@ export default function Header() {
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 md:h-20">
 
-          {/* Logo */}
+          {/* ✅ Logo scrolls to Hero */}
           <motion.div
             whileHover={{ scale: 1.05 }}
             className="text-2xl font-bold cursor-pointer select-none"
             style={{ color: '#F99F20' }}
-            onClick={() => scrollToSection('home')}
+            onClick={() => scrollToSection('hero')}
           >
             RM
           </motion.div>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((id) => (
               <button
@@ -69,27 +57,16 @@ export default function Header() {
                 onClick={() => scrollToSection(id)}
                 className="relative text-[#34495E] dark:text-gray-200 hover:text-[#F99F20] transition font-medium"
               >
-                {id.charAt(0).toUpperCase() + id.slice(1)}
+                {id === 'hero' ? 'Home' : id.charAt(0).toUpperCase() + id.slice(1)}
               </button>
             ))}
 
-            {/* Dark Mode Toggle */}
-            <button
-              onClick={toggleDarkMode}
-              className="p-2 rounded-full bg-[#F99F20] hover:brightness-110 shadow-md transition"
-            >
-              {darkMode ? <FiSun className="w-5 h-5 text-white" /> : <FiMoon className="w-5 h-5 text-white" />}
-            </button>
+           
           </div>
 
-          {/* Mobile Menu Controls */}
+          {/* Mobile Controls */}
           <div className="md:hidden flex items-center space-x-4">
-            <button
-              onClick={toggleDarkMode}
-              className="p-2 rounded-full bg-[#F99F20] shadow-md"
-            >
-              {darkMode ? <FiSun className="w-5 h-5 text-white" /> : <FiMoon className="w-5 h-5 text-white" />}
-            </button>
+        
 
             <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-[#34495E] dark:text-gray-200">
               {mobileMenuOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
@@ -110,7 +87,7 @@ export default function Header() {
                 onClick={() => scrollToSection(id)}
                 className="block w-full text-left px-4 py-3 hover:bg-gray-100 dark:hover:bg-[#22313F] transition"
               >
-                {id.charAt(0).toUpperCase() + id.slice(1)}
+                {id === 'hero' ? 'Home' : id.charAt(0).toUpperCase() + id.slice(1)}
               </button>
             ))}
           </motion.div>
