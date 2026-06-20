@@ -48,13 +48,11 @@ export default function Header() {
       initial={{ y: -120, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.7 }}
-      className="fixed top-0 left-0 right-0 z-50 px-4 md:px-8 py-4"
+      className="fixed top-0 left-0 right-0 z-50"
     >
       <div
         className={`
-        relative
-        max-w-7xl
-        mx-auto
+        relative  
         rounded-2xl
         border
         border-blue-900/40
