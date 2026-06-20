@@ -1,121 +1,276 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { FiSun, FiMoon, FiMenu, FiX } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiMenu, FiX } from 'react-icons/fi';
 
 export default function Header() {
-  const [darkMode, setDarkMode] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [active, setActive] = useState('home');
 
   useEffect(() => {
-    const isDark = typeof window !== 'undefined' && localStorage.getItem('darkMode') === 'true';
-    setDarkMode(isDark);
-    if (isDark) document.documentElement.classList.add('dark');
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 30);
+    };
 
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const toggleDarkMode = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('darkMode', newMode);
-      document.documentElement.classList.toggle('dark');
-    }
-  };
-
   const scrollToSection = (id) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-      setMobileMenuOpen(false);
+    setActive(id);
+
+    const element = document.getElementById(id);
+
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+      });
     }
+
+    setMobileMenuOpen(false);
   };
 
-  const navItems = ['home', 'about', 'skills', 'projects', 'contact'];
+  const navItems = [
+    'home',
+    'about',
+    'skills',
+    'projects',
+    'experience',
+    'testimonials',
+    'contact',
+  ];
 
   return (
     <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300
-        bg-[#ffffff] dark:bg-[#1A242F]
-        ${isScrolled ? 'shadow-[0_4px_4px_rgba(0,0,0,0.25)] border-b border-gray-300 dark:border-gray-700' : ''}
-      `}
+      initial={{ y: -120, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.7 }}
+      className="fixed top-0 left-0 right-0 z-50 px-4 md:px-8 py-4"
     >
-      <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 md:h-20">
+      <div
+        className={`
+        relative
+        max-w-7xl
+        mx-auto
+        rounded-2xl
+        border
+        border-blue-900/40
+        backdrop-blur-xl
+        bg-[#050816]/90
+        overflow-hidden
+        transition-all
+        duration-500
+        ${
+          isScrolled
+            ? 'shadow-[0_15px_40px_rgba(59,130,246,0.20)]'
+            : 'shadow-[0_10px_30px_rgba(0,0,0,0.35)]'
+        }
+      `}
+      >
+        {/* Glow Effect */}
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-transparent to-blue-500/5 pointer-events-none" />
 
+        <nav className="relative flex items-center justify-between h-20 px-6 md:px-10">
           {/* Logo */}
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="text-2xl font-bold cursor-pointer select-none"
-            style={{ color: '#F99F20' }}
             onClick={() => scrollToSection('home')}
+            className="flex items-center gap-3 cursor-pointer"
           >
-            RM
+            <h2
+              className="
+              text-4xl
+              font-black
+              bg-gradient-to-r
+              from-blue-500
+              via-indigo-400
+              to-white
+              bg-clip-text
+              text-transparent
+            "
+            >
+              RM
+            </h2>
+
+            <span className="hidden sm:block text-white font-semibold">
+              Rajat Mishra
+            </span>
           </motion.div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((id) => (
+          {/* Desktop Menu */}
+          <div className="hidden lg:flex items-center gap-10">
+            {navItems.map((item) => (
               <button
-                key={id}
-                onClick={() => scrollToSection(id)}
-                className="relative text-[#34495E] dark:text-gray-200 hover:text-[#F99F20] transition font-medium"
+                key={item}
+                onClick={() => scrollToSection(item)}
+                className="
+                relative
+                text-white/80
+                hover:text-white
+                transition-all
+                duration-300
+                font-medium
+              "
               >
-                {id.charAt(0).toUpperCase() + id.slice(1)}
+                <motion.span whileHover={{ y: -2 }}>
+                  {item.charAt(0).toUpperCase() + item.slice(1)}
+                </motion.span>
+
+                {active === item && (
+                  <motion.div
+                    layoutId="activeMenu"
+                    className="
+                      absolute
+                      -bottom-3
+                      left-0
+                      right-0
+                      mx-auto
+                      h-[3px]
+                      w-6
+                      rounded-full
+                      bg-blue-500
+                    "
+                  />
+                )}
               </button>
             ))}
-
-            {/* Dark Mode Toggle */}
-            <button
-              onClick={toggleDarkMode}
-              className="p-2 rounded-full bg-[#F99F20] hover:brightness-110 shadow-md transition"
-            >
-              {darkMode ? <FiSun className="w-5 h-5 text-white" /> : <FiMoon className="w-5 h-5 text-white" />}
-            </button>
           </div>
 
-          {/* Mobile Menu Controls */}
-          <div className="md:hidden flex items-center space-x-4">
-            <button
-              onClick={toggleDarkMode}
-              className="p-2 rounded-full bg-[#F99F20] shadow-md"
+          {/* Contact Button */}
+          <div className="hidden lg:flex items-center gap-4">
+            <motion.button
+              whileHover={{
+                scale: 1.05,
+                boxShadow: '0 0 25px rgba(59,130,246,0.4)',
+              }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => scrollToSection('contact')}
+              className="
+                px-6
+                py-3
+                rounded-full
+                border
+                border-blue-500
+                text-white
+                bg-[#09111f]
+                flex
+                items-center
+                gap-3
+                transition-all
+              "
             >
-              {darkMode ? <FiSun className="w-5 h-5 text-white" /> : <FiMoon className="w-5 h-5 text-white" />}
-            </button>
+              Contact Me
 
-            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-[#34495E] dark:text-gray-200">
-              {mobileMenuOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
-            </button>
+              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+            </motion.button>
           </div>
-        </div>
 
-        {/* Mobile Menu */}
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setMobileMenuOpen(true)}
+            className="lg:hidden text-white"
+          >
+            <FiMenu size={28} />
+          </button>
+        </nav>
+      </div>
+
+      {/* Mobile Drawer */}
+      <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -15 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="md:hidden py-4 bg-white dark:bg-[#1A242F] text-[#34495E] dark:text-gray-200 rounded-lg shadow-lg mt-2 border border-gray-300 dark:border-gray-700"
-          >
-            {navItems.map((id) => (
-              <button
-                key={id}
-                onClick={() => scrollToSection(id)}
-                className="block w-full text-left px-4 py-3 hover:bg-gray-100 dark:hover:bg-[#22313F] transition"
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+            />
+
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ duration: 0.4 }}
+              className="
+                fixed
+                top-0
+                right-0
+                h-screen
+                w-[320px]
+                bg-[#050816]
+                border-l
+                border-blue-900/40
+                shadow-[0_0_40px_rgba(59,130,246,0.2)]
+                p-6
+              "
+            >
+              <div className="flex justify-between items-center mb-10">
+                <div className="flex items-center gap-3">
+                  <h2 className="text-4xl font-black bg-gradient-to-r from-blue-500 via-indigo-400 to-white bg-clip-text text-transparent">
+                    RM
+                  </h2>
+
+                  <span className="text-white font-semibold">
+                    Rajat Mishra
+                  </span>
+                </div>
+
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-white"
+                >
+                  <FiX size={28} />
+                </button>
+              </div>
+
+              <div className="flex flex-col gap-6">
+                {navItems.map((item) => (
+                  <button
+                    key={item}
+                    onClick={() => scrollToSection(item)}
+                    className="
+                      text-left
+                      text-white/80
+                      hover:text-white
+                      border-b
+                      border-blue-900/20
+                      pb-4
+                      transition
+                    "
+                  >
+                    {item.charAt(0).toUpperCase() + item.slice(1)}
+                  </button>
+                ))}
+              </div>
+
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                onClick={() => scrollToSection('contact')}
+                className="
+                  mt-10
+                  w-full
+                  py-4
+                  rounded-full
+                  border
+                  border-blue-500
+                  text-white
+                  flex
+                  justify-center
+                  items-center
+                  gap-3
+                "
               >
-                {id.charAt(0).toUpperCase() + id.slice(1)}
-              </button>
-            ))}
-          </motion.div>
+                Contact Me
+                <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+              </motion.button>
+            </motion.div>
+          </>
         )}
-      </nav>
+      </AnimatePresence>
     </motion.header>
   );
-}
+}   
